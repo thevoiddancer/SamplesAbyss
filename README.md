@@ -68,9 +68,6 @@ Nothing special is done apart from setting up django, conda environment, this re
 ### Stage 2: Aplication and routes
 
 Samples application will be added as well as some default routes (landing page, search, browse, contribute pages).
-Potentially database will be migrated in this step. Corey implements blog functionality at this step, so I have to
-implement the sample source functionality as well, and I have to supply with some samples. As the db is quite large,
-instead of manually transferring, I will use two databases: one for django functionality (default), the other for samples.
 
 ### Stage 3: Templates
 
@@ -82,7 +79,9 @@ Nothing here, apart from checking how I can access the samples database from the
 
 ### Stage 5: Database and migration
 
-Usually I would create the samples db here, but as I think we needed some for stage 2, the job will already be handled there.
+Samples database will be migrated/created in this step. Corey implements blog functionality at this step, so I have to
+implement the sample source functionality as well, and I have to supply with some samples. As the db is quite large,
+instead of manually transferring, I will use two databases: one for django functionality (default), the other for samples.
 
 ### Stage 6: User registration
 
