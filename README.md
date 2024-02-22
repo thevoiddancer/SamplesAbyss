@@ -51,6 +51,10 @@ Right side:
     Tree of band-album-song links
 (I don't think I should list the samples here)
 
+#### Browse page
+
+Grid layout - 4 columns finishing on 3.
+
 ### API
 
 Spotify, discogs and IMDB API will be used that I know of exist.
@@ -71,7 +75,7 @@ Samples application will be added as well as some default routes (landing page, 
 
 ### Stage 3: Templates
 
-Pages will be worked out in more detail here. At this point the page should be mostly functional
+Pages will be worked out in more detail here. ~~At this point the page should be mostly functional.~~ At this point I will have a basic layout and alphabet part of browse section. Search section needs the db to be integrated. Contribute will be implemented last. For both contribute and search I need forms, which happens at login part.
 
 ### Stage 4: Admin page
 
@@ -89,11 +93,11 @@ This will be skipped for now, as no user registration will be done. In the futur
 
 ### Stage 7: Login and logout system
 
-This will be skipped for now, as no user registration will be done. In the future, Google SSO will be offered.
+~~This will be skipped for now, as no user registration will be done. In the future, Google SSO will be offered.~~ Correct on Google SSO offering, but I can use this logic to create a search and contribute fields here.
 
 ### Stage 8: User profile and picture
 
-This will be skipped for now, as no user registration will be done. In the future, Google SSO will be offered.
+~~This will be skipped for now, as no user registration will be done. In the future, Google SSO will be offered.~~ Correct on Google SSO offering, but I can use this logic to create specific pages for letters, etc, instead of manually creating them. Specifically, I think this part holds the flexible URL that can be used to generate letter-band-album... pages.
 
 ### Stage 9: Update user profile
 
