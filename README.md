@@ -90,14 +90,17 @@ instead of manually transferring, I will use two databases: one for django funct
 ### Stage 6: User registration
 
 This will be skipped for now, as no user registration will be done. In the future, Google SSO will be offered.
+Correct on Google SSO offering, but I can use this logic to create a search and contribute fields here.
 
 ### Stage 7: Login and logout system
 
-~~This will be skipped for now, as no user registration will be done. In the future, Google SSO will be offered.~~ Correct on Google SSO offering, but I can use this logic to create a search and contribute fields here.
+This will be skipped for now, as no user registration will be done. In the future, Google SSO will be offered.
+Correct on Google SSO offering, but I can use this logic to create a search and contribute fields here.
 
 ### Stage 8: User profile and picture
 
-~~This will be skipped for now, as no user registration will be done. In the future, Google SSO will be offered.~~ Correct on Google SSO offering, but I can use this logic to create specific pages for letters, etc, instead of manually creating them. Specifically, I think this part holds the flexible URL that can be used to generate letter-band-album... pages.
+This will be skipped for now, as no user registration will be done. In the future, Google SSO will be offered.
+Correct on Google SSO offering, but I can use this logic to create specific pages for letters, etc, instead of manually creating them. Specifically, I think this part holds the flexible URL that can be used to generate letter-band-album... pages.
 
 ### Stage 9: Update user profile
 

@@ -78,8 +78,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'samples': {
+        'NAME': BASE_DIR / 'samples.db',
+        'ENGINE': 'django.db.backends.sqlite3',
     }
 }
+
+DATABASE_ROUTERS = ['SamplesAbyss.routers.SamplesRouter']
 
 
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

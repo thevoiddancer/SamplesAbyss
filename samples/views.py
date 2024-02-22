@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import BandInfo
 
 bands_by_letters_dict = {
     '#': [
@@ -1068,7 +1068,10 @@ def home(request):
     return render(request, 'samples/home.html', context=context)
 
 def browse(request):
-    return render(request, 'samples/browse.html')
+    context = {
+        'bands': BandInfo.objects.all()
+    }
+    return render(request, 'samples/browse.html', context=context)
 
 def search(request):
     return render(request, 'samples/search.html')
