@@ -1,0 +1,11 @@
+{% extends "samples/base.html" %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+            <h1>Band list starting with {{ letter }}:</h1>
+            {% for band in object_list %}
+            <a href="{% url 'browse-albums' band.name|urlencode:'' %}" class="btn btn btn-outline-secondary d-block">{{ band.name }}</a>
+            {% endfor %}
+        </div>
+    </article>
+{% endblock content %}

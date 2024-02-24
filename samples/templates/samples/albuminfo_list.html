@@ -1,0 +1,13 @@
+{% extends "samples/base.html" %}
+{% load decode_filter %}
+
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+            <h1>Album list for {{ band|decode }}:</h1>
+            {% for album in object_list %}
+            <a href="{% url 'browse-songs' album.name|urlencode:'' %}" class="btn btn btn-outline-secondary d-block">{{ album.name }}</a>
+            {% endfor %}
+        </div>
+    </article>
+{% endblock content %}

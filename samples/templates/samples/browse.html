@@ -7,7 +7,7 @@
                 <div class="row justify-content-center">
             {% endif %}
                     <div class="col-md-2 col-sm-4 col-6 mb-2">
-                        <a href="#" class="btn btn btn-outline-secondary d-block">{{ letter }}</a>
+                        <a href="{% url 'browse-bands' letter %}" class="btn btn btn-outline-secondary d-block">{{ letter }}</a>
                     </div>
             {% if forloop.counter|divisibleby:4 and not forloop.last %}
                 </div>
