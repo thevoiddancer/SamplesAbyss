@@ -2,6 +2,45 @@
 
 Django project to build a website for browsing/searching/contributing to database of samples in music
 
+## Deployment
+
+Project uses poetry for dependency management. In addition I am also using conda for env management. Steps to set up both are:
+
+Installation steps
+```
+# create a directory to install minicaonda in
+mkdir -p ~/miniconda3
+# download latest miniconda version
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+# run the install script
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+# delete the intall script
+rm -rf ~/miniconda3/miniconda.sh
+# add a conda initialize to your bash
+~/miniconda3/bin/conda init bash
+# Verify the installaton 
+conda list
+# Install poetry
+curl -sSL https://install.python-poetry.org | python3 - --version 1.2.2
+```
+
+Project setup steps
+```
+# Create conda environment
+conda create -y -n SamplesAbyss python=3.11
+# Activate environment
+conda activate SamplesAbyss
+# Cd to project folder that holds poetry.lock (assuming in home)
+cd ~/SamplesAbyss
+# Install requirements using poetry
+poetry install
+```
+
+Running the server
+```
+python manage.py runserver
+```
+
 ## Concept
 
 The website will, at the start, offer three functionality:
