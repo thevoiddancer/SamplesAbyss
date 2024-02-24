@@ -1079,3 +1079,18 @@ def search(request):
 def contribute(request):
     return render(request, 'samples/contribute.html')
 
+def sample_search_view(request):
+    # SampleInfo.objects.filter(text__contains='rain').filter(text__contains='tears')
+    search_text = request.GET.get('search-sample')
+    context = {
+        'search_text': search_text
+    }
+    return render(request, 'samples/sample_search.html', context=context)
+
+def song_search_view(request):
+    search_text = request.GET.get('song-sample')
+    context = {
+        'search_text': search_text
+    }
+    return render(request, 'samples/song_search.html', context=context)
+

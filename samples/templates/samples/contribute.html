@@ -1,4 +1,17 @@
 {% extends "samples/base.html" %}
 {% block content %}
-<p>Here will be the page where people will contribute samples</p>
+<h1>Search page</h1>
+<div>Still not functional. Will be done last.</div>
+<div>
+    <form action="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Contribute a sample</legend>
+        </fieldset>
+        <div class="form-group">
+            <input type="search">
+            <button class="btn btn-outline-info" type="submit">Contribute</button>
+        </div>
+    </form>
+</div>
 {% endblock content %}
