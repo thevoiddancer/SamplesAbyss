@@ -80,6 +80,7 @@ Left side:
 Right side:
     list of samples and sources
     source links to source page
+    Collate the samples per source or list sequentially?
 
 #### Source page
 
@@ -114,7 +115,10 @@ Samples application will be added as well as some default routes (landing page, 
 
 ### Stage 3: Templates
 
-Pages will be worked out in more detail here. ~~At this point the page should be mostly functional.~~ At this point I will have a basic layout and alphabet part of browse section. Search section needs the db to be integrated. Contribute will be implemented last. For both contribute and search I need forms, which happens at login part.
+Pages will be worked out in more detail here. ~~At this point the page should be mostly functional.~~
+At this point I will have a basic layout and alphabet part of browse section. Search section needs the
+db to be integrated. Contribute will be implemented last. For both contribute and search I need forms,
+which happens at login part.
 
 ### Stage 4: Admin page
 
@@ -139,7 +143,8 @@ Correct on Google SSO offering, but I can use this logic to create a search and 
 ### Stage 8: User profile and picture
 
 This will be skipped for now, as no user registration will be done. In the future, Google SSO will be offered.
-Correct on Google SSO offering, but I can use this logic to create specific pages for letters, etc, instead of manually creating them. Specifically, I think this part holds the flexible URL that can be used to generate letter-band-album... pages.
+Correct on Google SSO offering, but I can use this logic to create specific pages for letters, etc, instead of manually
+creating them. Specifically, I think this part holds the flexible URL that can be used to generate letter-band-album... pages.
 
 ### Stage 9: Update user profile
 
@@ -162,3 +167,43 @@ This will be skipped for now, as no user registration will be done. In the futur
 ### Stage 13: Deployment
 
 The rest will be done off-github, to deploy the page.
+
+### Extra 14: Band/Album/Song redesign
+
+The layout will be redone using the design description above. At this stage this will be a placeholder with dummy data.
+
+### Extra 15: Source page
+
+Browse either needs to have sources added as second alphabet-grid or split into Browse bands + Browse sources.
+
+### Extra 15: API support
+
+API calls will be added to call to Discogs, Spotify, IMDB, YouTubeMusic. The calls will return links and thumbnails.
+Along with those APIs, YTM and Spotify embeds will be added for songs.
+In addition, a default error image and message will be generated.
+
+### Extra 16: DB redesign
+
+DB will be redesigned to hold additional columns. In first commit columns will be added, in the next they will be populated.
+1. Media url for thumbnails stored locally
+2. Urls for respective sites via API
+3. Verified or legacy column (or both) to track verification of old samples
+4. Move timestamp_source to sample_info table
+
+In addition, after adding verification column, an indicator will need to be added to track and show that on the page.
+
+### Extra 17: Search
+
+Search will be constrained only to search samples.
+The idea is to split the search string into chained filters. There could be issues with that and order of search returns.
+
+### Extra 18: Contribute
+
+Contribute part needs to have three functionality:
+1. API calls to verify the band/album/source
+2. Interactive dropdowns when one stage is selected
+3. Ability to search for a song by a band and list of albums who have that song are offered.
+
+### Extra 19: SSO
+
+In addition to SSO enable tracking of activity and a sort of credibility rating. Don't sweat profiles.

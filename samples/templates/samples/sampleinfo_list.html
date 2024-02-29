@@ -1,14 +1,29 @@
 {% extends "samples/base.html" %}
 {% load decode_filter %}
+{% load static %}
 
 {% block content %}
     <article class="media content-section">
-        <div class="media-body">
+        <div class="media-body container">
             <h1>Sample list for {{ song|decode }}:</h1>
-            {% for sample in object_list %}
-            <p>{{ sample.text }}</p>
-            <a href="{% url 'browse-source' sample.source.name|urlencode:'' %}" class="btn btn btn-outline-secondary d-block">{{ sample.source.name }}</a>
-            {% endfor %}
+            <div class="row">
+                <div class="col-4">
+                    <img class="img-fluid" src="{% static 'media/albums/rabbits_name.jpg' %}" alt="">
+                    <a href="https://www.discogs.com/artist/19996-AE-Dept" class="d-block">Discogs</a>
+                    <a href="https://open.spotify.com/artist/5wlWtftrNi2NyE89zTQCyK" class="d-block">Spotify</a>
+                    <a href="https://music.youtube.com/channel/UC99ASru-dkDRpGN5zIRp1Vw" class="d-block">YouTubeMusic</a>
+                </div>
+                <div class="col-8">
+                    {% for sample in object_list %}
+                    <div class="row">
+                        <div class="col">
+                            <p>{{ sample.text }}</p>
+                            <a href="{% url 'browse-source' sample.source.name|urlencode:'' %}" class="btn btn btn-outline-secondary d-block">{{ sample.source.name }}</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </article>
 {% endblock content %}

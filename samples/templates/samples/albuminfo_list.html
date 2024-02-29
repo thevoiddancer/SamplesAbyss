@@ -1,13 +1,28 @@
 {% extends "samples/base.html" %}
 {% load decode_filter %}
+{% load static %}
 
 {% block content %}
     <article class="media content-section">
-        <div class="media-body">
+        <div class="media-body container">
             <h1>Album list for {{ band|decode }}:</h1>
-            {% for album in object_list %}
-            <a href="{% url 'browse-songs' album.name|urlencode:'' %}" class="btn btn btn-outline-secondary d-block">{{ album.name }}</a>
-            {% endfor %}
+            <div class="row">
+                <div class="col-4">
+                    <img class="img-fluid" src="{% static 'media/bands/A&EDept.jpg' %}" alt="">
+                    <a href="https://www.discogs.com/artist/19996-AE-Dept" class="d-block">Discogs</a>
+                    <a href="https://open.spotify.com/artist/5wlWtftrNi2NyE89zTQCyK" class="d-block">Spotify</a>
+                    <a href="https://music.youtube.com/channel/UC99ASru-dkDRpGN5zIRp1Vw" class="d-block">YouTubeMusic</a>
+                </div>
+                <div class="col-8">
+                    {% for album in object_list %}
+                    <div class="row">
+                        <div class="col">
+                            <a href="{% url 'browse-songs' album.name|urlencode:'' %}" class="btn btn btn-outline-secondary d-block">{{ album.name }}</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </article>
 {% endblock content %}
