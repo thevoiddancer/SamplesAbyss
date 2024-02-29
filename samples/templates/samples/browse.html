@@ -1,6 +1,7 @@
 {% extends "samples/base.html" %}
 {% block content %}
 <div class="container">
+    <h1>Browse bands</h1>
     {% with total_items=27 letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ#'|make_list %}
         {% for letter in letters %}
             {% if forloop.first %}
@@ -8,6 +9,24 @@
             {% endif %}
                     <div class="col-md-2 col-sm-4 col-6 mb-2">
                         <a href="{% url 'browse-bands' letter %}" class="btn btn btn-outline-secondary d-block">{{ letter }}</a>
+                    </div>
+            {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                </div>
+                <div class="row justify-content-center">
+            {% elif forloop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}
+
+    <h1>Browse sources</h1>
+    {% with total_items=27 letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ#'|make_list %}
+        {% for letter in letters %}
+            {% if forloop.first %}
+                <div class="row justify-content-center">
+            {% endif %}
+                    <div class="col-md-2 col-sm-4 col-6 mb-2">
+                        <a href="{% url 'browse-sources' letter %}" class="btn btn btn-outline-secondary d-block">{{ letter }}</a>
                     </div>
             {% if forloop.counter|divisibleby:4 and not forloop.last %}
                 </div>

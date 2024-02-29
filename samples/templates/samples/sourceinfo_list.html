@@ -1,27 +1,11 @@
 {% extends "samples/base.html" %}
-{% load decode_filter %}
-{% load static %}
-
 {% block content %}
     <article class="media content-section">
-        <div class="media-body container">
-            <h1>Sample list for source {{ source|decode }}:</h1>
-            <div class="row">
-                <div class="col-4">
-                    <img class="img-fluid" src="{% static 'media/sources/thx1138.jpg' %}" alt="">
-                    <a href="https://www.imdb.com/title/tt0066434/?ref_=fn_al_tt_1" class="d-block">IMDB</a>
-                </div>
-                <div class="col-8">
-                    {% for sample in object_list %}
-                    <div class="row">
-                        <div class="col">
-                            <p>{{ sample.text }}</p>
-                            <a href="{% url 'browse-samples' sample.song.name|urlencode:'' %}" class="btn btn btn-outline-secondary d-block">{{ sample.song.name }}</a>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+        <div class="media-body">
+            <h1>Source list starting with {{ letter }}:</h1>
+            {% for source in object_list %}
+            <a href="{% url 'browse-source' source.name|urlencode:'' %}" class="btn btn btn-outline-secondary d-block">{{ source.name }}</a>
+            {% endfor %}
         </div>
     </article>
 {% endblock content %}

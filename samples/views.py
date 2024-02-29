@@ -112,8 +112,8 @@ class SampleListView(ListView):
         context['song'] = self.kwargs.get('song')
         return context
 
-class SourceListView(ListView):
-    template_name = 'samples/sourceinfo_list.html'
+class SourceSampleListView(ListView):
+    template_name = 'samples/sourcesampleinfo_list.html'
 
     def get_queryset(self) -> QuerySet[Any]:
         source = urllib.parse.unquote(self.kwargs.get('source'))
@@ -123,5 +123,18 @@ class SourceListView(ListView):
     def get_context_data(self):
         context = super().get_context_data()
         context['source'] = self.kwargs.get('source')
+        return context
+
+class SourceListView(ListView):
+    def get_queryset(self) -> QuerySet[Any]:
+        letter = self.kwargs.get('letter')
+        if letter == "#":
+            letter = '[^a-zA-Z]'
+        source_list = SourceInfo.objects.filter(name__regex=f'^{letter}').order_by('name')
+        return source_list
+    
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['letter'] = self.kwargs.get('letter')
         return context
 
