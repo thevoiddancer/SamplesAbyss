@@ -6,16 +6,16 @@ authors = ["Tomislav Nazifovic <tomislav.nazifovic@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.8"
 bootstrap4 = "^0.1.0"
-django = "^5.0.2"
 python3-discogs-client = "^2.7"
 spotipy = "^2.23.0"
 ytmusicapi = "^1.5.4"
 cinemagoer = "^2023.5.1"
+django = "*"
 
 [tool.poetry.group.dev.dependencies]
-ipython = "^8.22.1"
+ipython = "*"
 
 [build-system]
 requires = ["poetry-core"]
