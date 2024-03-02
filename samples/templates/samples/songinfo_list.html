@@ -8,10 +8,11 @@
             <h1>Song list for {{ album|decode }}:</h1>
             <div class="row">
                 <div class="col-4">
-                    <img class="img-fluid" src="{% static 'media/albums/rabbits_name.jpg' %}" alt="">
-                    <a href="https://www.discogs.com/artist/19996-AE-Dept" class="d-block">Discogs</a>
-                    <a href="https://open.spotify.com/artist/5wlWtftrNi2NyE89zTQCyK" class="d-block">Spotify</a>
-                    <a href="https://music.youtube.com/channel/UC99ASru-dkDRpGN5zIRp1Vw" class="d-block">YouTubeMusic</a>
+                    <img class="img-fluid" src="{{ discogs_img }}" alt="">
+                    <a href="{{ discogs_url }}" class="d-block" target="_blank">Discogs</a>
+                    <a href="{{ spotify_url }}" class="d-block" target="_blank">Spotify</a>
+                    <a href="{{ spotify_uri }}" class="d-block">SPOTIFY APP</a>
+                    <a href="{{ ytmusic_url }}" class="d-block" target="_blank">YouTubeMusic</a>
                 </div>
                 <div class="col-8">
                     {% for song in object_list %}

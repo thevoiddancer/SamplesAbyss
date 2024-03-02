@@ -4,6 +4,35 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render
 from .models import BandInfo, AlbumInfo, SongInfo, SourceInfo
 from django.views.generic import ListView
+from urllib.parse import unquote
+import discogs_client as DiscogsClient
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from ytmusicapi import YTMusic as YTMusicClient
+import os
+import json
+from imdb import Cinemagoer
+
+DISCOGS_USER_TOKEN=os.getenv('DISCOGS_USER_TOKEN')
+SPOTIFY_CLIENT_ID=os.getenv('SPOTIFY_CLIENT_ID')
+SPOTIFY_CLIENT_SECRET=os.getenv('SPOTIFY_CLIENT_SECRET')
+YTMUSIC_ACCESS_TOKEN=os.getenv('YTMUSIC_ACCESS_TOKEN')
+YTMUSIC_REFRESH_TOKEN=os.getenv('YTMUSIC_REFRESH_TOKEN')
+
+with open('oauth.json') as file:
+    oauth = json.load(file)
+oauth['access_token'] = YTMUSIC_ACCESS_TOKEN
+oauth['refresh_token'] = YTMUSIC_REFRESH_TOKEN
+
+
+discogs_client = DiscogsClient.Client('ExampleApplication/0.1', user_token=DISCOGS_USER_TOKEN)
+
+spotify_credentials_manager = SpotifyClientCredentials(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET)
+spotify_client = spotipy.Spotify(client_credentials_manager=spotify_credentials_manager)
+
+ytMusic = YTMusicClient('oauth.json')
+
+imdb_client = Cinemagoer()
 
 home_list = [
     {
@@ -65,6 +94,98 @@ def song_search_view(request):
     }
     return render(request, 'samples/song_search.html', context=context)
 
+def get_artist_discogs(band):
+    band = unquote(band)
+    results = discogs_client.search(band, type='artist')[0]
+    result_dict = {
+        'discogs_id': results.id,
+        'discogs_name': results.name,
+        'discogs_img': results.images[0]['uri'] if results.images else '',
+        'discogs_url': results.url,
+        'discogs_releases': results.releases,
+    }
+    return result_dict
+
+def get_artist_spotify(band_name):
+    band_name = unquote(band_name)
+    results = spotify_client.search(q='artist:' + band_name, type='artist')['artists']['items'][0]
+    result_dict = {
+        'spotify_id': results['id'],
+        'spotify_name': results['name'],
+        'spotify_img': results['images'][1]['url'] if results['images'] else '',
+        'spotify_uri': results['uri'],
+        'spotify_url': results['external_urls']['spotify'],
+    }
+    return result_dict
+
+def get_artist_ytmusic(band_name):
+    band_name = unquote(band_name)
+    results = [res for res in ytMusic.search(band_name) if res['category'] == 'Artists'][0]
+    result_dict = {
+        'ytmusic_id': results['browseId'],
+        'ytmusic_name': results['artist'],
+        'ytmusic_img': results['thumbnails'][1]['url'],
+        'ytmusic_url': 'https://music.youtube.com/channel/' + results['browseId'],
+    }
+    return result_dict
+
+def get_album_discogs(album_name):
+    album_name = unquote(album_name)
+    result = discogs_client.search(album_name, type='release')[0]
+    result_dict = {
+        'discogs_id': result.id,
+        'discogs_name': result.title,
+        'discogs_img': result.images[0]['uri'],
+        'discogs_url': result.url,
+    }
+    return result_dict
+
+def get_album_spotify(album_name):
+    album_name = unquote(album_name)
+    result = spotify_client.search(album_name, type='album')['albums']['items'][0]
+    result_dict = {
+        'spotify_id': result['id'],
+        'spotify_name': result['name'],
+        'spotify_img': result['images'][1]['url'],
+        'spotify_url': result['external_urls']['spotify'],
+        'spotify_uri': result['uri'],
+    }
+    return result_dict
+
+def get_album_ytmusic(album_name):
+    album_name = unquote(album_name)
+    result = [res for res in ytMusic.search(album_name, filter='albums', ignore_spelling=True)][0]
+    url = ytMusic.get_album(result['browseId'])['audioPlaylistId']    
+    result_dict = {
+        'ytmusic_name': result['title'],
+        'ytmusic_id': result['browseId'],
+        'ytmusic_url': 'https://music.youtube.com/playlist?list=' + url,
+        'ytmusic_img': result['thumbnails'][2]['url'],
+    }
+    return result_dict
+
+def get_song_ytmusic(band, album, song):
+    results = ytMusic.search(album, filter='albums', ignore_spelling=True)[0]
+    tracks_info = ytMusic.get_album(results['browseId'])['tracks']
+    song = [track for track in tracks_info if track['title'] == song][0]['videoId']
+    return 'https://www.youtube.com/embed/' + song
+
+def get_song_spotify(band, album, song):
+    album_id = spotify_client.search(album, type='album')['albums']['items'][0]['id']
+    tracks = spotify_client.album(album_id)['tracks']['items']
+    track_info = [track for track in tracks if track['name'] == song][0]
+    return 'https://open.spotify.com/embed/track/' + track_info['id']
+
+def get_movie(movie):
+    movie = unquote(movie)
+    result = imdb_client.search_movie(movie)[0]
+    result_dict = {
+        'imdb_name': result['title'],
+        'imdb_url': 'https://www.imdb.com/title/tt' + result.movieID,
+        'imdb_img': result['full-size cover url'],
+    }
+    return result_dict
+
 class BandListView(ListView):
     def get_queryset(self) -> QuerySet[Any]:
         letter = self.kwargs.get('letter')
@@ -87,7 +208,16 @@ class AlbumListView(ListView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        context['band'] = self.kwargs.get('band')
+        band = self.kwargs.get('band')
+
+        discogs_dict = get_artist_discogs(band)
+        context.update(discogs_dict)
+        spotify_dict = get_artist_spotify(band)
+        context.update(spotify_dict)
+        ytmusic_dict = get_artist_ytmusic(band)
+        context.update(ytmusic_dict)
+
+        context['band'] = band
         return context
 
 class SongListView(ListView):
@@ -98,7 +228,16 @@ class SongListView(ListView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        context['album'] = self.kwargs.get('album')
+        album = self.kwargs.get('album')
+
+        discogs_dict = get_album_discogs(album)
+        context.update(discogs_dict)
+        spotify_dict = get_album_spotify(album)
+        context.update(spotify_dict)
+        ytmusic_dict = get_album_ytmusic(album)
+        context.update(ytmusic_dict)
+
+        context['album'] = album
         return context
 
 class SampleListView(ListView):
@@ -109,7 +248,13 @@ class SampleListView(ListView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        context['song'] = self.kwargs.get('song')
+        song = self.kwargs.get('song')
+        album = SongInfo.objects.filter(name=song).first().album.name
+        band = SongInfo.objects.filter(name=song).first().album.band.name
+        context['ytmusic_url'] = get_song_ytmusic(band, album, song)
+        context['spotify_url'] = get_song_spotify(band, album, song)
+
+        context['song'] = song
         return context
 
 class SourceSampleListView(ListView):
@@ -122,7 +267,14 @@ class SourceSampleListView(ListView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        context['source'] = self.kwargs.get('source')
+        movie = self.kwargs.get('source')
+
+        imdb_dict = get_movie(movie)
+        print(movie)
+        print(imdb_dict)
+        context.update(imdb_dict)
+
+        context['source'] = movie
         return context
 
 class SourceListView(ListView):

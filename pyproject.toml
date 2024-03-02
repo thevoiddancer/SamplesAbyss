@@ -7,10 +7,15 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-pillow = "^10.2.0"
 bootstrap4 = "^0.1.0"
-crispy-bootstrap4 = "^2023.1"
+django = "^5.0.2"
+python3-discogs-client = "^2.7"
+spotipy = "^2.23.0"
+ytmusicapi = "^1.5.4"
+cinemagoer = "^2023.5.1"
 
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.22.1"
 
 [build-system]
 requires = ["poetry-core"]

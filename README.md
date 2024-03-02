@@ -176,13 +176,13 @@ The layout will be redone using the design description above. At this stage this
 
 Browse either needs to have sources added as second alphabet-grid or split into Browse bands + Browse sources.
 
-### Extra 15: API support
+### Extra 16: API support
 
 API calls will be added to call to Discogs, Spotify, IMDB, YouTubeMusic. The calls will return links and thumbnails.
 Along with those APIs, YTM and Spotify embeds will be added for songs.
-In addition, a default error image and message will be generated.
+In part 2 a default error image and message will be generated and an improved searching function will be implemented.
 
-### Extra 16: DB redesign
+### Extra 17: DB redesign
 
 DB will be redesigned to hold additional columns. In first commit columns will be added, in the next they will be populated.
 1. Media url for thumbnails stored locally
@@ -192,18 +192,18 @@ DB will be redesigned to hold additional columns. In first commit columns will b
 
 In addition, after adding verification column, an indicator will need to be added to track and show that on the page.
 
-### Extra 17: Search
+### Extra 18: Search
 
 Search will be constrained only to search samples.
 The idea is to split the search string into chained filters. There could be issues with that and order of search returns.
 
-### Extra 18: Contribute
+### Extra 19: Contribute
 
 Contribute part needs to have three functionality:
 1. API calls to verify the band/album/source
 2. Interactive dropdowns when one stage is selected
 3. Ability to search for a song by a band and list of albums who have that song are offered.
 
-### Extra 19: SSO
+### Extra 20: SSO
 
 In addition to SSO enable tracking of activity and a sort of credibility rating. Don't sweat profiles.

@@ -1,5 +1,5 @@
 from django import template
-from urllib.parse import unquote #python3
+from urllib.parse import unquote
 register = template.Library()
 
 @register.filter

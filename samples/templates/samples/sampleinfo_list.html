@@ -8,10 +8,8 @@
             <h1>Sample list for {{ song|decode }}:</h1>
             <div class="row">
                 <div class="col-4">
-                    <img class="img-fluid" src="{% static 'media/albums/rabbits_name.jpg' %}" alt="">
-                    <a href="https://www.discogs.com/artist/19996-AE-Dept" class="d-block">Discogs</a>
-                    <a href="https://open.spotify.com/artist/5wlWtftrNi2NyE89zTQCyK" class="d-block">Spotify</a>
-                    <a href="https://music.youtube.com/channel/UC99ASru-dkDRpGN5zIRp1Vw" class="d-block">YouTubeMusic</a>
+                    <iframe style="border-radius:12px" width="100%" frameborder="0" title="YouTube video player" src="{{ ytmusic_url }}" ></iframe>
+                    <iframe style="border-radius:12px" width="100%" frameBorder="0" title="Spotify video player" src="{{ spotify_url }}" ></iframe>
                 </div>
                 <div class="col-8">
                     {% for sample in object_list %}
