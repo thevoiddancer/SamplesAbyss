@@ -251,7 +251,7 @@ class SampleListView(ListView):
         song = self.kwargs.get('song')
         album = SongInfo.objects.filter(name=song).first().album.name
         band = SongInfo.objects.filter(name=song).first().album.band.name
-        context['ytmusic_url'] = get_song_ytmusic(band, album, song)
+        # context['ytmusic_url'] = get_song_ytmusic(band, album, song)
         context['spotify_url'] = get_song_spotify(band, album, song)
 
         context['song'] = song

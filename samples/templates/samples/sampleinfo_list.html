@@ -7,11 +7,11 @@
         <div class="media-body container">
             <h1>Sample list for {{ song|decode }}:</h1>
             <div class="row">
-                <div class="col-4">
+                <div class="col-md-4">
                     <iframe style="border-radius:12px" width="100%" frameborder="0" title="YouTube video player" src="{{ ytmusic_url }}" ></iframe>
                     <iframe style="border-radius:12px" width="100%" frameBorder="0" title="Spotify video player" src="{{ spotify_url }}" ></iframe>
                 </div>
-                <div class="col-8">
+                <div class="col-md-8">
                     {% for sample in object_list %}
                     <div class="row">
                         <div class="col">
