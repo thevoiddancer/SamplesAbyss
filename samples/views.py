@@ -1,4 +1,3 @@
-from rich import print as rprint
 import urllib
 from typing import Any
 from django.db.models.query import QuerySet
@@ -89,8 +88,6 @@ def contribute(request):
         album = ''
         stage = 'start'
     context = {'artist': artist, 'album': album, 'album_data': album_data, 'artist_data': artist_data, 'track_data': track_data, 'stage': stage, 'track_obj': track_obj}
-    print(stage)
-    rprint(context)
     return render(request, 'samples/contribute.html', context=context)
 
 
