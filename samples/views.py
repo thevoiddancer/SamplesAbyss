@@ -1,3 +1,4 @@
+from rich import print as rprint
 import urllib
 from typing import Any
 from django.db.models.query import QuerySet
@@ -33,6 +34,65 @@ spotify_client = spotipy.Spotify(client_credentials_manager=spotify_credentials_
 ytMusic = YTMusicClient('oauth.json')
 
 imdb_client = Cinemagoer()
+
+def contribute(request):
+    blank_uri = 'https://secure.gravatar.com/avatar/53bfb1fac188f4edb589cbd53460e409?s=100&r=pg&d=mm'
+    album_data = []
+    artist_data = []
+    track_data = []
+    track_obj = []
+    if request.method == 'POST':
+        rprint(request.POST)
+        artist = request.POST.get('artist_name_or_discogs_id', '')
+        print(artist)
+        album = request.POST.get('album_name_or_discogs_id', '')
+        track = request.POST.get('track_id', '')
+        if artist.isnumeric() and not album and not track:
+            stage = 'got_artist'
+            artist_result = discogs_client.artist(int(artist))
+            album_result = [rel for rel in artist_result.releases if type(rel) == DiscogsClient.models.Master and rel.data['artist'] == artist_result.name]
+            album_data = [{'name': item.title, 'id': item.id, 'img': (getattr(item, 'images') or [{'uri': blank_uri}])[0]['uri']} for item in album_result]
+        elif artist and not album and not track:
+            stage = 'find_artist'
+            artist_result = list(discogs_client.search(artist, type='artist'))[:6]
+            artist_data = [{'name': item.name, 'id': item.id, 'img': (getattr(item, 'images') or [{'uri': blank_uri}])[0]['uri']} for item in artist_result]
+        elif not artist and album.isnumeric() and not track:
+            stage = 'got_album'
+            album_result = discogs_client.master(int(album))
+        elif not artist and album and not track:
+            stage = 'find_album'
+            album_result = list(discogs_client.search(album, type='master'))[:6]
+            album_data = [{'name': item.title, 'id': item.id, 'img': (getattr(item, 'images') or [{'uri': blank_uri}])[0]['uri']} for item in album_result]
+        elif artist.isnumeric() and album.isnumeric() and not track:
+            stage = 'got_both'
+            artist_result = discogs_client.artist(int(artist))
+            album_result = discogs_client.master(int(album))
+            track_data = [{'id': track.position, 'name': track.title}  for track in album_result.tracklist]
+        elif artist and album and not track:
+            stage = 'find_both'
+            artist_result = list(discogs_client.search(artist, type='artist'))[:6]
+            artist_data = [{'name': item.name, 'id': item.id, 'img': (getattr(item, 'images') or [{'uri': blank_uri}])[0]['uri']} for item in artist_result]
+            album_result = list(discogs_client.search(album, type='master'))[:6]
+            album_data = [{'name': item.title, 'id': item.id, 'img': (getattr(item, 'images') or [{'uri': blank_uri}])[0]['uri']} for item in album_result]
+        elif track:
+            stage = 'got_all'
+            artist_result = discogs_client.artist(int(artist))
+            album_result = discogs_client.master(int(album))
+            track_result = album_result.tracklist[int(track) - 1]
+            track_obj = {'artist': artist_result, 'album': album_result, 'track': track_result}
+        else:
+            artist = ''
+            album = ''
+            stage = 'start'
+    else:
+        artist = ''
+        album = ''
+        stage = 'start'
+    context = {'artist': artist, 'album': album, 'album_data': album_data, 'artist_data': artist_data, 'track_data': track_data, 'stage': stage, 'track_obj': track_obj}
+    print(stage)
+    rprint(context)
+    return render(request, 'samples/contribute.html', context=context)
+
 
 home_list = [
     {
@@ -75,9 +135,6 @@ def browse(request):
 
 def search(request):
     return render(request, 'samples/search.html')
-
-def contribute(request):
-    return render(request, 'samples/contribute.html')
 
 def sample_search_view(request):
     # SampleInfo.objects.filter(text__contains='rain').filter(text__contains='tears')

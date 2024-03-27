@@ -3,15 +3,139 @@
 <h1>Search page</h1>
 <div>Still not functional. Will be done last.</div>
 <div>
-    <form action="POST">
+    <form method="POST" action="{% url 'samples-contribute' %}">
         {% csrf_token %}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Contribute a sample</legend>
         </fieldset>
         <div class="form-group">
-            <input type="search">
-            <button class="btn btn-outline-info" type="submit">Contribute</button>
+            {% if stage == 'start' %}
+                <p>Enter artist name or discogs id:
+                    <input type="search" name="artist_name_or_discogs_id">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_artist">Find artist</button>
+                </p>
+                <p>Enter album name or discogs id:
+                    <input type="search" name="album_name_or_discogs_id">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_album">Find album</button>
+                </p>
+            {% elif stage == 'find_artist' %}
+                <p>Enter artist name or discogs id:
+                    <input type="search" name="artist_name_or_discogs_id" value="{{ artist }}">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_artist">Find artist</button>
+                </p>
+                <p>Enter album name or discogs id:
+                    <input type="search" name="album_name_or_discogs_id" value="{{ album }}">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_album">Find album</button>
+                </p>
+
+                <div class="container">
+                    <div class="row">
+                        {% for item in artist_data %}
+                        <button class="btn btn-outline-info mt-2 col-md-2 mb-2" type="submit" name="artist_name_or_discogs_id" value="{{ item.id }}" >
+                            <img src="{{ item.img }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;" />
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.name }}</h5>
+                            </div>
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elif stage == 'find_album' %}
+                <p>Enter artist name or discogs id:
+                    <input type="search" name="artist_name_or_discogs_id" value="{{ artist }}">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_artist">Find artist</button>
+                </p>
+                <p>Enter album name or discogs id:
+                    <input type="search" name="album_name_or_discogs_id" value="{{ album }}">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_album">Find album</button>
+                </p>
+
+                <div class="container">
+                    <div class="row">
+                        {% for item in album_data %}
+                        <button class="btn btn-outline-info mt-2 col-md-2 mb-2" type="submit" name="album_name_or_discogs_id" value="{{ item.id }}" >
+                            <img src="{{ item.img }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;" />
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.name }}</h5>
+                            </div>
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elif stage == 'got_artist' %}
+                <p>Enter artist name or discogs id:
+                    <input type="search" name="artist_name_or_discogs_id" value="{{ artist }}">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_artist">Find artist</button>
+                </p>
+                <p>Enter album name or discogs id:
+                    <input type="search" name="album_name_or_discogs_id" value="{{ album }}">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_album">Find album</button>
+                </p>
+
+                <div class="container">
+                    <div class="row">
+                        {% for item in album_data %}
+                        <button class="btn btn-outline-info mt-2 col-md-2 mb-2" type="submit" name="album_name_or_discogs_id" value="{{ item.id }}" >
+                            <img src="{{ item.img }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;" />
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.name }}</h5>
+                            </div>
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elif stage == 'got_album' %}
+                <p>Enter artist name or discogs id:
+                    <input type="search" name="artist_name_or_discogs_id" value="{{ artist }}">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_artist">Find artist</button>
+                </p>
+                <p>Enter album name or discogs id:
+                    <input type="search" name="album_name_or_discogs_id" value="{{ album }}">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_album">Find album</button>
+                </p>
+
+                <div class="container">
+                    <div class="row">
+                        {% for item in album_data %}
+                        <button class="btn btn-outline-info mt-2 col-md-2 mb-2" type="submit" name="album_name_or_discogs_id" value="{{ item.id }}" >
+                            <img src="{{ item.img }}" class="card-img-top" alt="{{ item.name }}" style="height: 200px; object-fit: cover;" />
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.name }}</h5>
+                            </div>
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elif stage == 'got_both' %}
+                <p>Enter artist name or discogs id:
+                    <input type="search" name="artist_name_or_discogs_id" value="{{ artist }}">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_artist">Find artist</button>
+                </p>
+                <p>Enter album name or discogs id:
+                    <input type="search" name="album_name_or_discogs_id" value="{{ album }}">
+                    <button class="btn btn-outline-info mt-2" type="submit" name="find_album">Find album</button>
+                </p>
+
+                <div class="container">
+                        {% for item in track_data %}
+                        <button class="btn btn-outline-info d-block" type="submit" name="track_id" value="{{ item.id }}" >
+                            {{ item.id }} - {{ item.name }}
+                        </button>
+                        {% endfor %}
+                </div>
+            {% elif stage == 'got_all' %}
+                <p>Artist: {{ track_obj.artist.title }}</p>
+                <p>Album: {{ track_obj.album.title }}</p>
+                <p>Track: {{ track_obj.track.title }}</p>
+                <p>Input sample below:</p>
+                <textarea name="sample" cols="40" rows="5"></textarea><br />
+                Source: <input type="text" name="source" />
+                <button class="btn btn-outline-info d-block" type="submit">
+                    Contribute
+                </button>
+            {% endif %}
         </div>
     </form>
 </div>
+
 {% endblock content %}
